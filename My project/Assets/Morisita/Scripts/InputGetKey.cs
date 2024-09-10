@@ -7,18 +7,18 @@ using UnityEngine;
 public class InputGetKey : MonoBehaviour
 {
     [SerializeField]
-    List<KeyCode> rndkeycodes = new List<KeyCode>{ KeyCode.Q, KeyCode.W,KeyCode.E,KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O, KeyCode.P,
+    List<KeyCode> rnKeyCodes = new List<KeyCode>{ KeyCode.Q, KeyCode.W,KeyCode.E,KeyCode.R, KeyCode.T, KeyCode.Y, KeyCode.U, KeyCode.I, KeyCode.O, KeyCode.P,
                               KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.F, KeyCode.G, KeyCode.H, KeyCode.J, KeyCode.K, KeyCode.L,
                               KeyCode.Z, KeyCode.X, KeyCode.C, KeyCode.V, KeyCode.B, KeyCode.N, KeyCode.M,
                               KeyCode.Alpha0,KeyCode.Alpha1,KeyCode.Alpha2,KeyCode.Alpha3,KeyCode.Alpha4,KeyCode.Alpha5,KeyCode.Alpha6,KeyCode.Alpha7,KeyCode.Alpha8,KeyCode.Alpha9};
     [SerializeField]
-    List<KeyCode> rmdkeycodes;
+    List<KeyCode> rmdKeyCodes;
 
     const int kaburiNum = 8;
 
-    public List<KeyCode> keys;
-    public bool[] IskeyDown = new bool[4];
-    public bool IsAllKeyDown = true;
+    public List<KeyCode> inputKeys;
+    public bool[] isKeyDown = new bool[4];
+    public bool isAllKeyDown = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,13 +29,13 @@ public class InputGetKey : MonoBehaviour
     void Update()
     {
         BoolReset();
-        IsAllKeyDown = true;
+        isAllKeyDown = true;
         int i = 0;
-        foreach (KeyCode c in keys)
+        foreach (KeyCode c in inputKeys)
         {
             if (Input.GetKey(c))
             {
-                IskeyDown[i] = true;
+                isKeyDown[i] = true;
             }
             else
             {
@@ -44,13 +44,13 @@ public class InputGetKey : MonoBehaviour
             i++;
         }
 
-        foreach (bool ikd in IskeyDown)
+        foreach (bool ikd in isKeyDown)
         {
             if (!ikd)
-                IsAllKeyDown = false;
+                isAllKeyDown = false;
         }
 
-        if (IsAllKeyDown)
+        if (isAllKeyDown)
         {
             KeyChange();
         }
@@ -59,39 +59,39 @@ public class InputGetKey : MonoBehaviour
 
     public void BoolReset()
     {
-        for (int i = 0; i < IskeyDown.Length; i++)
+        for (int i = 0; i < isKeyDown.Length; i++)
         {
-            IskeyDown[i] = false;
+            isKeyDown[i] = false;
         }
-        IsAllKeyDown = false;
+        isAllKeyDown = false;
     }
     public void InitKeySet()
     {
         for (int i = 0; i < kaburiNum; i++)
         {
-            int rnd = Random.Range(0, rndkeycodes.Count);
-            KeyCode key = rndkeycodes[rnd];
-            rndkeycodes.RemoveAt(rnd);
+            int rnd = Random.Range(0, rnKeyCodes.Count);
+            KeyCode key = rnKeyCodes[rnd];
+            rnKeyCodes.RemoveAt(rnd);
 
-            if (i > kaburiNum - 4 - 1)
-                keys.Add(key);
+            if (i < 4)
+                inputKeys.Add(key);
 
-            rmdkeycodes.Add(key);
+            rmdKeyCodes.Add(key);
         }
 
     }
     public void KeyChange()
     {
-        keys.RemoveAt(0);
-        int rnd = Random.Range(0, rndkeycodes.Count);
-        KeyCode key = rndkeycodes[rnd];
+        inputKeys.RemoveAt(0);
+        int rnd = Random.Range(0, rnKeyCodes.Count);
+        KeyCode key = rnKeyCodes[rnd];
 
-        rndkeycodes.RemoveAt(rnd);
-        rndkeycodes.Add(rmdkeycodes[0]);
+        rnKeyCodes.RemoveAt(rnd);
+        rnKeyCodes.Add(rmdKeyCodes[0]);
 
-        rmdkeycodes.RemoveAt(0);
-        rmdkeycodes.Add(key);
+        rmdKeyCodes.RemoveAt(0);
+        rmdKeyCodes.Add(key);
 
-        keys.Add(key);
+        inputKeys.Add(key);
     }
 }
